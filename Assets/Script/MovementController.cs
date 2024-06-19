@@ -5,9 +5,10 @@ using UnityEngine;
 public class MovementController : MonoBehaviour
 {
     public float moveSpeed = 350;
-    public float attackSpeed = 100;
+    public float attackSpeed = 10;
     public Animator animation;
     public GameObject food;
+    public Transform firePoint;
 
     void Start()
     {
@@ -40,11 +41,18 @@ public class MovementController : MonoBehaviour
             animation.SetBool("RigtWalk", false);
         }
 
-        if(Input.GetKey(KeyCode.Mouse0))
+        if(Input.GetKeyDown(KeyCode.Mouse0))
         {
             animation.SetTrigger("Throw");
-            // Instantiate(food, transform.position, Quaternion.identity); 
-            // transform.Translate(new Vector3(0, 0, 50) * attackSpeed * Time.deltaTime);
+            SpawnFood();
         }
+    }
+    
+    void SpawnFood()
+    {
+        GameObject foodClone = Instantiate(food, firePoint.position, firePoint.rotation);
+        Rigidbody rb = foodClone.GetComponent<Rigidbody>(); 
+        rb.AddForce(firePoint.forward * attackSpeed, ForceMode.Impulse);   
+        Destroy(foodClone, 3f);
     }
 }
