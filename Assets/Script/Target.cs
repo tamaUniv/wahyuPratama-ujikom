@@ -5,6 +5,7 @@ using UnityEngine;
 public class Target : MonoBehaviour
 {
     public float health;
+    private Rigidbody rb;
     private Dictionary<string, float> healthbyName = new Dictionary<string, float>() {
         {"Deer", 200},
         {"Dog", 100},
@@ -32,12 +33,14 @@ public class Target : MonoBehaviour
         {
             health = healthbyName[gameObject.name];
         }
+        rb = GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        transform.Translate(Vector3.back * speedbyName[gameObject.name] * Time.deltaTime);
+        // transform.Translate(Vector3.back * speedbyName[gameObject.name] * Time.deltaTime);
+        rb.MovePosition(transform.position + Vector3.back * speedbyName[gameObject.name] * Time.deltaTime);
     }
 
     public void TakeDamage(float damage)
